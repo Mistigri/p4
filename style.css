@@ -23,7 +23,7 @@ input {
 	margin : 10px;
 	border-radius : 5px;
 }
-input#pseudo,
+input#form_pseudo,
 input#form_message {
 	display : inline-block;
 	width: 60%;
