@@ -1,6 +1,8 @@
 <?php
 
-class PostManager {
+require_once("model/Manager.php");
+
+class PostManager extends Manager {
     public function getPosts() {
         $db = $this->dbConnect();
         $req = $db->query('SELECT id, pseudo, message, DATE_FORMAT(creation_date, \'%d/%m/%Y %Hh%i\') AS date_message FROM minichat ORDER BY date_message DESC LIMIT 0, 5');
@@ -15,10 +17,5 @@ class PostManager {
         $post = $req->fetch();
 
         return $post;
-    }
-
-    private function dbConnect() {
-        $db = new PDO('mysql:host=localhost;dbname=minichat;charset=utf8', 'root', '');
-        return $db;
     }
 }
