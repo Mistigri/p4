@@ -16,16 +16,20 @@ session_start();
 
     <body>
         <h1>Bienvenue sur notre chat !</h1>
-        <form class="formChat" action="miniChat_post.php" method="post">
+        <form class="formChat" action="miniChat/miniChat_post.php" method="post">
         <p>
-            <label for="pseudo">Pseudo : <input type="text" 
-            <?php                                 
-            if (isset($_SESSION['pseudo'])) { 
-                echo 'value="' . $_SESSION['pseudo'] . '"';
-            }
-            ?>
-            name="pseudo" id="pseudo"/></label><br/>
-            <label for="message">Message : <input type="textarea" name = "message" id="form_message"/></label><br/>
+            <label for="pseudo">Pseudo : 
+                <input type="text" 
+                <?php                                 
+                if (isset($_SESSION['pseudo'])) { 
+                    echo 'value="' . $_SESSION['pseudo'] . '"';
+                }
+                ?>
+                name="pseudo" id="form_pseudo"/>
+            </label><br/>
+            <label for="message">Message : 
+                <input type="textarea" name = "message" id="form_message"/>
+            </label><br/>
             <input type="submit" value="Envoyer" />
         </p>
         </form>
