@@ -12,16 +12,16 @@ while ($data = $posts->fetch()) {
 
 <div class="news">
     <h3>
-        <?= htmlspecialchars($data['post_title']); ?>
-        <em>le <?= $data['date_post_fr']; ?></em>
+        <?= htmlspecialchars($data['title']); ?>
+        <em>le <?= $data['creation_date_fr']; ?></em>
     </h3>
 
      <p>
-    <?= nl2br(htmlspecialchars($data['post_content']));
+    <?= nl2br(htmlspecialchars($data['content']));
     ?>
     <br />
-    <!--em><a href="#">Commentaires</a></em-->
-    <em><a href="comments.php?post=<?php echo $data['id_post']; ?>">Commentaires</a></em>
+
+    <em><a href="index.php?id=<?= $data['id'] ?>">Commentaires</a></em>
     </p>
 </div>
 
@@ -32,6 +32,6 @@ $posts->closeCursor();
 
 <?php $content = ob_get_clean(); ?>
 
-<?php require('template.php'); ?>
+<?php require('view/frontend/template.php'); ?>
 
 
