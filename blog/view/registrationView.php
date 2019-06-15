@@ -7,7 +7,7 @@
 	<form action="index.php?action=register" method="post">
 		<input type="text" name="username" placeholder="Nom d'utilisateur">
 		<input type="password" name="password" placeholder="Mot de passe">
-		<input type="submit" name="inscription" value="S'inscrire">
+		<input type="submit" name="inscription" value="Connexion">
 	</form>
 	<em><a href="index.php?action=login">Se connecter</a></em>
 </div>
