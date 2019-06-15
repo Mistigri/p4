@@ -10,7 +10,7 @@ class CommentManager extends \ML\Blog\Model\Manager {
 
     public function getComments($postId) {
         $db = $this->dbConnect();
-        $comments = $db->prepare('SELECT comments.id, users.name, comments.comment, DATE_FORMAT(comments.comment_date, \'%d/%m/%Y à %Hh%imin%ss\') AS comment_date_fr FROM comments INNER JOIN users ON comments.id_author = users.id WHERE comments.post_id = ? ORDER BY comments.comment_date DESC');
+        $comments = $db->prepare('SELECT comments.id, users.username AS commentWriter, comments.comment, DATE_FORMAT(comments.comment_date, \'%d/%m/%Y à %Hh%i\') AS comment_date_fr FROM comments INNER JOIN users ON comments.id_author = users.id WHERE comments.post_id = ? ORDER BY comments.comment_date DESC');
         $comments->execute(array($postId));
 
         return $comments;
@@ -25,23 +25,31 @@ class CommentManager extends \ML\Blog\Model\Manager {
         return $affectedLines;
     }
 
-/*nouvelle partie modif commentaires
+//nouvelle partie modif commentaires
     public function selectComment($commentId) {
         $db = $this->dbConnect();
-        $selectedComment = $db->prepare('SELECT id, post_id, id_author, comment FROM comments WHERE id = ?');
+        $selectedComment = $db->prepare('SELECT id, notification FROM comments WHERE id = ?');
         $selectedComment->execute(array($commentId));
  
         return $selectedComment;
-    }*/
+    }
 
     //partie de signalement d'un commentaire inapproprié
-    public function notifyComment($commentId) {
+    public function notifyComment($commentId/*, $postId*/) {
         $db = $this->dbConnect();
-        $oldComment = $this->selectComment($commentId);
-        $notifiedComment = $db->prepare('UPDATE comments SET notification = ? WHERE id=?');
-        $affectedComment = $notifiedComment->execute(array($notification, $commentId));
+        //$oldComment = $this->selectComment($commentId, $postId);
+        $notifiedComment = $db->prepare('UPDATE comments SET notification = notification +1 WHERE id=?');
+        $affectedComment = $notifiedComment->execute(array($commentId/*, $postId*/));
  
-        return $notifiedComment;
+        return $affectedComment;
+    }
+
+    public function returnToPost($commentId) {
+        $db = $this->dbConnect();
+        $selectedComment = $db->prepare('SELECT id, post_id FROM comments WHERE id = ?');
+        $selectedComment->execute(array($commentId));
+ 
+        return $selectedComment;
     }
 
     /*fonction modification de commentaire
