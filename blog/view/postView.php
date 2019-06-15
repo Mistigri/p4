@@ -1,61 +1,67 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="utf-8" />
-        <title>Mon blog avec commentaires</title>
+<?php 
 
-    </head>
+ob_start(); 
 
-    <body>
-        <h1>Mon super blog !</h1>
-        <p><a href="index.php">Retour à la liste des billets</a></p>
+?>
 
-        <div class="news">
-            <h3>
-                <?php echo htmlspecialchars($post['post_title']); ?>
-                <em>le <?php echo $post['date_post_fr']; ?></em>
-            </h3>
+<h1>Mon super blog !</h1>
+<p><a href="index.php">Retour à la liste des billets</a></p>
 
-            <p>
-            <?php
-            echo nl2br(htmlspecialchars($post['post_content']));
-            ?>
-            </p>
-        </div>
+<div class="news">
+    <h3>
+        <?= htmlspecialchars($post['title']); ?>
+        <em>le <?= $post['creation_date_fr']; ?></em>
+    </h3>
+    <p>
+    <?php
+    echo nl2br(htmlspecialchars($post['content']));
+    ?>
+    </p>
+</div>
 
-        <h2>Commentaires</h2>
+<h2>Commentaires</h2>
+<?php if(isset($_SESSION['id'])) {
+    ?>
 
-        <form action="index.php?action=addComment&amp;id=<?= $post['id_post'] ?>" method="post">
-        <div>
-            <label for="author">Auteur</label><br />
-            <input type="text" id="author" name="author" />
-        </div>
-        <div>
-            <label for="comment">Commentaire</label><br />
-            <textarea id="comment_content" name="comment_content"></textarea>
-        </div>
-        <div>
-            <input type="submit" />
-        </div>
-        </form>
+    <form action="index.php?action=addComment&amp;id=<?= $post['id'] ?>" method="post">
 
-        <?php
+    <div>
+        <label for="comment">Commentaire</label><br />
+        <textarea id="comment" name="comment"></textarea>
+    </div>
+    <div>
+        <input type="submit" />
+    </div>
+    </form>
 
-        while ($comment = $comments->fetch()) {
+<?php
+}
 
-        ?>
+while ($comment = $comments->fetch()) {
 
-        <p><strong><?= htmlspecialchars($comment['author']); ?></strong> le <?= $comment['date_comment_fr']; ?></p>
+?>
 
-        <p><?= nl2br(htmlspecialchars($comment['comment_content'])); ?></p>
+<p><strong><?= (htmlspecialchars($comment['commentWriter'])); ?></strong> le <?= $comment['comment_date_fr']; ?> 
+<?php 
+if(isset($_SESSION['id'])) {
+    ?>
+    (<a href="index.php?action=notifyComment&amp;id=<?=$comment['id']?>">Signaler</a>)</p>
+    <?php
+}
+?>
 
-        <?php
+<p><?= nl2br(htmlspecialchars($comment['comment'])); ?></p>
 
-        } // Fin de la boucle des commentaires
+<?php
 
-        $req->closeCursor();
+} // Fin de la boucle des commentaires
 
-        ?>
+?>
 
-</body>
-</html>
+<?php
+
+$content = ob_get_clean(); 
+
+?>
+ 
+<?php require('template.php'); ?>
