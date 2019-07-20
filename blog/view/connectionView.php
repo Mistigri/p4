@@ -1,16 +1,20 @@
+<?php 
+
+ob_start(); 
+
+?>
+
 <h1>Bienvenue sur mon blog !</h1>
 
 <div class = "connectionForm">
-
-	<h4>Se connecter : </h4>
 
 	<form action="index.php?action=login" method="post">
 		<input type="text" name="username" placeholder="Nom d'utilisateur">
 		<input type="password" name="password" placeholder="Mot de passe">
 		<input type="submit" name="connexion" value="Se connecter">
 	</form>
-	<em><a href="index.php?action=register">S'inscrire</a></em>
 
+	<em><a href="index.php?action=register">S'inscrire</a></em>
 </div>
 
 <?php
@@ -23,7 +27,12 @@ if (isset($_SESSION['id']) AND isset($_SESSION['username'])) {
 	</div>
 <?php
 }
+
+$content = ob_get_clean(); 
+
 ?>
+
+<?php require('template.php'); ?>
 
 
 

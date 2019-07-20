@@ -1,7 +1,5 @@
 <?php 
 
-$title = 'Mon blog';
-
 ob_start(); 
 
 if(isset ($_SESSION['username'])) {
@@ -34,7 +32,7 @@ while ($data = $posts->fetch()) {
     </h3>
 
      <p>
-    <?= nl2br(htmlspecialchars($data['content']));
+    <?= nl2br($data['content']);
     ?>
     <br />
 

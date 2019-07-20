@@ -12,12 +12,10 @@ if(isset($_SESSION['id']) && ($_SESSION['status'] == 1)) {
 
     <div class="Ajouter un post :">
         <form action = "index.php?action=formPost" method="POST">
-            <label for ="titre">Titre :</label><input type = "text" id="titlePost" name="titlePost"><br/>
-            <label for = "texte">Texte :</label><textarea id ="newPost" name= "textarea" rows = "4"cols = "50"></textarea><br/>
+            <label for ="titre">Titre : </label><input type = "text" id="titlePost" name="titlePost"><br/>
+            <label for = "texte">Texte : </label><textarea id ="newPost" name= "newPost"></textarea><br/>
             <input type ="submit" value = "Enregistrer">
-
         </form>    
-        </p>
     </div>
 
 <?php

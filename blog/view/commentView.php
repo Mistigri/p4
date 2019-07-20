@@ -12,13 +12,12 @@ $selectComment=$selectedComment->fetch();
 ?>
 
 <form action="index.php?action=notifyComment&amp;id=<?= $selectComment['id']?>" method="post">
-
-<div>
-    <label for="notification">Voulez-vous signaler ce commentaire ?</label><br />
-    <input type="checkbox" id="yes" name="yes" value= Oui >
-    <input type="checkbox" id="no" name="no" value= Non >
-    <input type="submit" />
-</div>
+	<div>
+	    <label for="notification">Voulez-vous signaler ce commentaire ?</label><br />
+	    <input type="checkbox" id="yes" name="yes" value= Oui >
+	    <input type="checkbox" id="no" name="no" value= Non >
+	    <input type="submit" />
+	</div>
 </form>
 
 <?php

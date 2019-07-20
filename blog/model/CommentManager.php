@@ -1,7 +1,5 @@
 <?php
 
-//session_start();
-
 namespace ML\Blog\Model;
 
 require_once("model/Manager.php");
@@ -51,6 +49,34 @@ class CommentManager extends \ML\Blog\Model\Manager {
  
         return $selectedComment;
     }
+
+    //récupérer les commentaires signalés
+    public function getCommentsToModerate() {
+        $db = $this ->dbConnect();
+        $selectedComments = $db ->query('SELECT comments.id, comments.post_id, users.username, comments.comment, comments.comment_date FROM comments INNER JOIN users ON comments.id_author = users.id WHERE comments.notification>0');
+
+        return $selectedComments;
+    }
+
+    //supprimer un commentaire signalé
+    public function deleteComment($commentId) {
+        $db = $this -> dbConnect();
+        $commentDeleted = $db -> prepare ('DELETE FROM comments WHERE id=?');
+        $commentDeleted->execute(array($commentId));
+
+        return $commentDeleted;
+    }
+
+    //confirmer un commentaire signalé
+    public function ignoreComment($commentId) {
+        $db = $this -> dbConnect();
+        $commentIgnored = $db -> prepare ('UPDATE comments SET notification = 0 WHERE id=?');
+        $commentIgnored->execute(array($commentId));
+
+        return $commentIgnored;
+    }
+
+
 
     /*fonction modification de commentaire
     public function modifyComment($commentId, $newAuthor, $newComment) {

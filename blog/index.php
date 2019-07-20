@@ -34,7 +34,12 @@ try {
 	    }
 
 
-	    //pour un utilisateur non connecté : accès à un post et à ses commentaires (sans possibilité d'en ajouter)
+	    //pour un utilisateur non connecté : 
+	    //afficher la liste des posts : affichage par défaut
+	    if ($_GET['action'] == 'listPosts') {
+	        listPosts();
+	    }
+	    //accéder à un post et à ses commentaires (sans possibilité d'en ajouter)
 	    elseif ($_GET['action'] == 'post') {
 	        if (isset($_GET['id']) && ($_GET['id'] > 0)) {
 	            post();
@@ -63,23 +68,49 @@ try {
 	    //signaler des commentaires
 	    elseif ($_GET['action'] == 'notifyComment') {
 	    	if (isset($_GET['id']) && $_GET['id'] > 0) {
-	    		notifyComment($_GET['id']/*, $_GET['id_post']*/);
+	    		notifyComment($_GET['id']);
         	}
         	else {
         		echo 'Erreur : aucun identifiant de commentaire envoyé';
         	}	
 	    }
-	    //retourner à la liste des posts
-	    if ($_GET['action'] == 'listPosts') {
-	        listPosts();
-	    }
 
 
         //pour l'administrateur : ajout, modification et suppression d'un post et retour à la liste des posts
-	    //ajout de la possibilité d'ajouter un post
+	    //accéder à la page pour ajouter un post
 	    elseif ($_GET['action'] == 'addPost') {
 	            addPost();
         }
+    	//accéder au formulaire pour ajouter un post
+	    elseif ($_GET['action'] == 'formPost') {
+	        if (!empty($_POST['titlePost']) && !empty($_POST['newPost'])) {
+	            formPost($_POST['titlePost'], $_POST['newPost']);
+	        }
+	        else {
+	            echo 'Erreur : tous les champs ne sont pas remplis !';
+	        }
+	    }
+		//accèder à la page des commentaires signalés
+	    elseif ($_GET['action'] == 'moderateComments') {
+            moderateComments();
+        }
+        //supprimer un commentaire signalé
+	    elseif ($_GET['action'] == 'deleteComment') {
+	    	if (isset($_GET['id']) && $_GET['id'] > 0) {
+	    		deleteComment($_GET['id']);
+        	}
+        	else {
+        		echo 'Erreur : aucun identifiant de commentaire envoyé';
+        	}	
+	    }
+	    elseif ($_GET['action'] == 'ignoreComment') {
+	    	if (isset($_GET['id']) && $_GET['id'] > 0) {
+	    		ignoreComment($_GET['id']);
+        	}
+        	else {
+        		echo 'Erreur : aucun identifiant de commentaire envoyé';
+        	}	
+	    }
 
 
 		/*partie modifier un post

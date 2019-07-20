@@ -83,14 +83,15 @@ function addPost() {
 }
 
 
-function addPost2($post) {
+function formPost($postTitle, $postContent) {
 	$postManager = new \ML\Blog\Model\PostManager();
-	$affectedLines = $postManager->addPost($post);
+	$affectedLines = $postManager->addNewPost($postTitle, $postContent);
     if ($affectedLines === false) {
         throw new Exception('Impossible d\'ajouter le post !');
     }
     else {
-        require('view/frontend/listPostView.php');
+    	echo('Bravo le veau');
+        //require('view/frontend/listPostView.php');
     }
 }
 
