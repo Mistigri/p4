@@ -6,7 +6,7 @@ require_once('model/CommentManager.php');
 require_once('model/LogManager.php');
 
 
-//connexion
+//connexion d'un utilisateur
 function login($username, $password) {
 	$logUser = new \ML\Blog\Model\LogManager();
 	$checkUser = $logUser->userExist($username);
@@ -19,8 +19,6 @@ function login($username, $password) {
 	        $_SESSION['id'] = $checkedUser['id'];
 	        $_SESSION['username'] = $username;
 	        $_SESSION['status'] = $checkedUser['status'];
-
-	        var_dump($checkedUser['status']);
 	        echo 'Vous êtes connecté !';
 	        header('Location: index.php');
 		}
@@ -61,14 +59,13 @@ function register($username, $password) {
 }
 
 
+//utilisateur non connecté
 //accès à la liste des posts
 function listPosts() {
     $postManager = new \ML\Blog\Model\PostManager(); // Création d'un objet
     $posts = $postManager->getPosts(); // Appel d'une fonction de cet objet
     require('view/frontend/listPostsView.php');
 }
-
-
 //accès à un post et à ses commentaires
 function post() {
     $postManager = new \ML\Blog\Model\PostManager();
@@ -78,23 +75,9 @@ function post() {
     require('view/frontend/postView.php');
 }
 
-function addPost() {
-	require('view/frontend/addPostView.php');
-}
 
-
-function formPost($postTitle, $postContent) {
-	$postManager = new \ML\Blog\Model\PostManager();
-	$affectedLines = $postManager->addNewPost($postTitle, $postContent);
-    if ($affectedLines === false) {
-        throw new Exception('Impossible d\'ajouter le post !');
-    }
-    else {
-    	echo('Bravo le veau');
-        //require('view/frontend/listPostView.php');
-    }
-}
-
+//utilisateur connecté
+//possibilité d'ajouter un commentaire
 function addComment($postId, $author, $comment) {
     $commentManager = new \ML\Blog\Model\CommentManager();
     $author = $_SESSION['id'];
@@ -106,19 +89,16 @@ function addComment($postId, $author, $comment) {
         header('Location: index.php?action=post&id=' . $postId);
     }
 }
-
-function notifyComment($commentId/*, $postId*/) {
+//possibilité de signaler un commentaire
+function notifyComment($commentId) {
 	$commentManager = new \ML\Blog\Model\CommentManager();
-	$selectedComment = $commentManager->notifyComment($commentId/*, $postId*/);
+	$selectedComment = $commentManager->notifyComment($commentId);
 	if ($selectedComment === false) {
 	    throw new Exception('Impossible de signaler le commentaire !');
 	}
 	else {
-		//$backToPost = $commentManager -> returnToPost($commentId);
-
-header('Location: index.php');
-	}
-	
+		header('Location: index.php');
+	}	
 }
 
 function selectComment($commentId) {
@@ -126,6 +106,76 @@ function selectComment($commentId) {
 	$selectedComment = $commentManager->selectComment($commentId);
 	require('view/frontend/commentView.php');
 }
+
+
+//fonctionnalités de l'auteur
+//accéder à la page d'ajout d'article
+function addPost() {
+	require('view/frontend/addPostView.php');
+}
+//poster le nouvel article
+function formPost($postTitle, $postContent) {
+	$postManager = new \ML\Blog\Model\PostManager();
+	$affectedLines = $postManager->addNewPost($postTitle, $postContent);
+    if ($affectedLines === false) {
+        throw new Exception('Impossible d\'ajouter le post !');
+    }
+    else {
+        header('Location:index.php?action=listPosts');
+    }
+}
+//accéder à la page de mise à jour d'un article
+function updatePost($postId) {
+	$postManager = new \ML\Blog\Model\PostManager();
+	$selectedPost = $postManager->getPost($postId);
+
+	require('view/frontend/updatePostView.php');
+}
+//poster l'article mis à jour
+function updateFormPost($postId, $newTitle, $newPost) {
+	$postManager = new \ML\Blog\Model\PostManager();
+	$selectedPost = $postManager->updatePost($postId, $newTitle, $newPost);
+	if ($selectedPost === false) {
+	    throw new Exception('Impossible de modifier l\'article !');
+	}
+	else {
+	    header('Location:index.php?action=listPosts');
+	}
+}
+//supprimer un article
+function deletePost($postId) {
+	$postManager = new \ML\Blog\Model\postManager();
+    $getPostToDelete = $postManager->deletePost($_GET['id']);
+    $getCommentsToDelete = $postManager->deleteComments($_GET['id']);
+    header('Location:index.php?action=listPosts');
+}
+
+
+
+//accéder à la page de modération des commentaires
+function moderateComments() {
+	$commentManager = new \ML\Blog\Model\CommentManager();
+    $comments = $commentManager->getCommentsToModerate();
+	require('view/frontend/moderateCommentsView.php');
+}
+//supprimer un commentaire notifié
+function deleteComment($commentId) {
+	$commentManager = new \ML\Blog\Model\CommentManager();
+    $getCommentToDelete = $commentManager->deleteComment($_GET['id']);
+    header('Location:index.php?action=moderateComments');
+}
+//confirmer un commentaire signalé
+function ignoreComment($commentId) {
+	$commentManager = new \ML\Blog\Model\CommentManager();
+    $ignoredComment = $commentManager->ignoreComment($_GET['id']);
+    //echo('Commentaire supprimé avec succès !');
+    header('Location:index.php?action=moderateComments');
+}
+
+
+
+
+
 /*ajout modif commentaire
 function modifyComment($commentId, $postId, $newAuthor, $newComment) {
 	$commentManager = new \ML\Blog\Model\CommentManager();
