@@ -1,17 +1,62 @@
-h1, h3 {
+.selector-for-some-widget {
+  box-sizing: content-box;
+}
+
+body {
+    font-family: 'Varela Round', 'Pacifico',sans-serif;
+}
+
+h1 {
     text-align:center;
+    font-family: 'Pacifico';
+    margin-top: 50px;
+    font-size:2.7rem;
+}
+
+.connectionForm {
+    margin: 10px;
+}
+
+.sinscrire {
+    vertical-align: middle;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+section {
+    margin : 5%;
+}
+
+.listeBillets {
+    font-family: 'Pacifico';
+    font-size: 1.7rem;
+    padding : 50px;
+}
+
+.optionsAuteur {
+    font-size: 1.2em;
+    padding : 50px;
 }
 
 h3 {
-    background-color:black;
+    text-align:center;
+    background-color:#17a2b8 ;
     color:white;
-    font-size:0.9em;
+    font-size:1em;
+    padding: 20px;
     margin-bottom:0px;
+    font-weight: bold;
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
 }
 
 .news p {
-    background-color:#CCCCCC;
+    background-color:#ffcac9;
     margin-top:0px;
+    padding : 10px;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
 }
 
 .news {
@@ -21,5 +66,60 @@ h3 {
 
 a {
     text-decoration: none;
-    color: blue;
+    color: #17a2b8;
+    font-weight: bold;
+}
+
+input {
+    display: inline-block;
+    font-weight: 400;
+    vertical-align: middle;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-color: #ffcac9;
+    border: 1px solid #17a2b8;
+    border-top-color: #17a2b8;
+    border-right-color: #17a2b8;
+    border-bottom-color: #17a2b8;
+    border-left-color: #17a2b8;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: .25rem;
+}
+
+.commentaires, .modification, .suppression {
+    background-color : #7EDEA2 ;
+    border: 1px solid transparent;
+    color:black;
+    margin : -5px 8px 40px 8px;
+}
+
+#titlePost, #newTitle {
+    background-color : white;
+    margin : 0px 10px 0px 10px;
+}
+
+.enregistrement {
+    background-color:#17a2b8;
+}
+
+footer {
+    text-align:center;
+    font-size: 0.90em;
+    font-style: bold;
+    color:grey;
+    margin : 5% 5% 2% 5%;
+}
+
+footer img {
+    width: 3%;
+    height: 3%;
+}
+
+.mentionsLegales {
+    font-size: 0.95em;
+    text-decoration: underline;
 }
