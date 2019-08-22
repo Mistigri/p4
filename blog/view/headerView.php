@@ -10,7 +10,6 @@ if(isset ($_SESSION['username'])) {
 <?php
 }
 else {
-    //require("connectionView.php");
     ?>	
     <div class = "connectionForm row justify-content-end">
 		<form action="index.php?action=login" method="post">
