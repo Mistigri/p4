@@ -6,8 +6,5 @@
     06 12 13 14 15<br/>
     marie-lacour@outlook.fr<br/>
     dans le cadre d'un projet OpenClassrooms.<br/>
-    <img 
-        src="./public/images/logo_OpenClassrooms.png"
-        alt="[Logo d'OpenClassrooms]"
-        /><br/>
+    <img src="./public/images/logo_OpenClassrooms.png" alt="[Logo d'OpenClassrooms]"/><br/>
 </footer>
