@@ -9,7 +9,7 @@
         <link href="public/css/style.css" rel="stylesheet" /> 
 		<script src="https://cdn.tiny.cloud/1/cfrzdwr2883ozk22peorltuqrkcyt8jxiqelelhtmz885mrw/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script> 
 	    <script>tinymce.init({ selector: '#newPost' });</script>
-        <title><!--?= $title ?-->Mon blog</title>
+        <title>Mon blog</title>
     </head>
 
     <body>
