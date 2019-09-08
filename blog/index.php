@@ -14,7 +14,7 @@ try {
 	            login($_POST['username'], ($_POST['password']));
 	        }
 	        else {
-	            require("view/frontend/connectionView.php");
+	            require("view/frontend/headerView.php");
 	        }
 	    }	
 	    //enregistrement
@@ -45,7 +45,7 @@ try {
 	            post();
 	        }
 	        else {
-	            echo 'Erreur : aucun identifiant de billet envoyé';
+	        	header('Location:index.php?action=showError&errorMessage=Erreur : aucun identifiant de billet envoyé.');
 	        }
 	    }
 
@@ -58,11 +58,11 @@ try {
 		            addComment($_GET['id'], $_SESSION['id'], $_POST['comment']);
 		        }
 		        else {
-		            echo 'Erreur : tous les champs ne sont pas remplis !';
+		        	header('Location:index.php?action=showError&errorMessage=Erreur : tous les champs ne sont pas remplis.');
 		        }
 		    }
 		    else {
-		        echo 'Erreur : aucun identifiant de billet envoyé';
+		    	header('Location:index.php?action=showError&errorMessage=Erreur : aucun identifiant de billet envoyé.');
 		    }
 	    }
 	    //signaler des commentaires
@@ -71,12 +71,12 @@ try {
 	    		notifyComment($_GET['id']);
         	}
         	else {
-        		echo 'Erreur : aucun identifiant de commentaire envoyé';
+        		header('Location:index.php?action=showError&errorMessage=Erreur : aucun identifiant de commentaire envoyé.');
         	}	
 	    }
 
 
-        //pour l'administrateur : ajout, modification et suppression d'un post et retour à la liste des posts
+        //pour l'administrateur : ajout, modification et suppression d'un post et modération des commentaires
 	    //accéder à la page pour ajouter un post
 	    elseif ($_GET['action'] == 'addPost') {
 	            addPost();
@@ -87,9 +87,33 @@ try {
 	            formPost($_POST['titlePost'], $_POST['newPost']);
 	        }
 	        else {
-	            echo 'Erreur : tous les champs ne sont pas remplis !';
+	        	header('Location:index.php?action=showError&errorMessage=Erreur : tous les champs ne sont pas remplis.');
 	        }
 	    }
+	    //accéder à la page pour modifier un post
+	    elseif ($_GET['action'] == 'updatePost') {
+	            updatePost($_GET['id']);
+        }
+    	//accéder au formulaire pour modifier un post
+	    elseif ($_GET['action'] == 'updateFormPost') {
+	        if (!empty($_POST['newTitle']) && !empty($_POST['newPost'])) {
+	            updateFormPost($_GET['id'], $_POST['newTitle'], $_POST['newPost']);
+	        }
+	        else {
+	        	header('Location:index.php?action=showError&errorMessage=Erreur : tous les champs ne sont pas remplis.');
+	        }
+	    }
+        //supprimer un article
+	    elseif ($_GET['action'] == 'deletePost') {
+	    	if (isset($_GET['id']) && $_GET['id'] > 0) {
+	    		deletePost($_GET['id']);
+        	}
+        	else {	
+	        	header('Location:index.php?action=showError&errorMessage=Erreur : aucun identifiant d\'article envoyé.');
+        	}	
+	    }
+
+
 		//accèder à la page des commentaires signalés
 	    elseif ($_GET['action'] == 'moderateComments') {
             moderateComments();
@@ -100,7 +124,7 @@ try {
 	    		deleteComment($_GET['id']);
         	}
         	else {
-        		echo 'Erreur : aucun identifiant de commentaire envoyé';
+        		header('Location:index.php?action=showError&errorMessage=Erreur : aucun identifiant de commentaire envoyé.');
         	}	
 	    }
 	    elseif ($_GET['action'] == 'ignoreComment') {
@@ -108,57 +132,24 @@ try {
 	    		ignoreComment($_GET['id']);
         	}
         	else {
-        		echo 'Erreur : aucun identifiant de commentaire envoyé';
+        		header('Location:index.php?action=showError&errorMessage=Erreur : aucun identifiant de commentaire envoyé.');
         	}	
 	    }
 
 
-		/*partie modifier un post
-	    elseif ($_GET['action'] == 'modifyPost') {
-	    	if (isset($_GET['id']) && $_GET['id'] > 0) {
-	    		selectPost($_GET['id']);
-        	}
-        	else {
-        		echo 'Erreur : aucun identifiant de post envoyé';
-        	}	
+	   	//afficher le message d'erreur
+	    elseif ($_GET['action'] == 'showError') {
+	    	showError($_GET['errorMessage']);
 	    }
-		//supprimer un post
-	    elseif ($_GET['action'] == 'deletePost') {
-            	deletePost();
-	    }
-
-
-		partie modif commentaire
-	    elseif ($_GET['action'] == 'modifyComment') {
-	    	if (isset($_GET['id']) && $_GET['id'] > 0) {
-	    		selectComment($_GET['id']);
-        	}
-        	else {
-        		echo 'Erreur : aucun identifiant de commentaire envoyé';
-        	}	
-	    }
-
-	    elseif ($_GET['action'] == 'updateComment') {
-	    	if (isset($_GET['id']) && $_GET['id'] > 0) {
-				if (!empty($_POST['newAuthor']) && !empty($_POST['newComment'])) {
-	            	modifyComment($_GET['id'], $_GET['postid'], $_POST['newAuthor'], $_POST['newComment']);
-	        	}
-	        	else {
-	            	echo 'Erreur : tous les champs ne sont pas remplis !';
-	        	}
-	    	}
-	    }*/
 	}
-
+	//affichage par défaut : liste des articles
 	else {
 	    listPosts();
 	}	
 }
 
 catch(Exception $e) { 
-
     echo 'Erreur : ' . $e->getMessage();
-
 }
 
 
