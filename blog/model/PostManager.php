@@ -1,7 +1,5 @@
 <?php
 
-//session_start();
-
 namespace ML\Blog\Model;
 
 require_once("model/Manager.php");
@@ -42,14 +40,6 @@ class PostManager extends \ML\Blog\Model\Manager {
         $postDeleted->execute(array($postId));
 
         return $postDeleted;
-    }
-    //supprimer les commentaires relatifs à un post supprimé
-    public function deleteComments($postId) {
-        $db = $this -> dbConnect();
-        $commentsDeleted = $db -> prepare ('DELETE FROM comments WHERE post_id=?');
-        $commentsDeleted->execute(array($postId));
-
-        return $commentsDeleted;
     }
 
     //ajouter un nouvel article
