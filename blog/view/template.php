@@ -1,15 +1,47 @@
 <!DOCTYPE html>
+<html lang="fr">
 <html>
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <!--Bootstrap-->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+          <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+          <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+        <![endif]-->
+        <!--Google Fonts-->
         <link href="https://fonts.googleapis.com/css?family=Pacifico&display=swap" rel="stylesheet"> 
         <link href="https://fonts.googleapis.com/css?family=Varela+Round&display=swap" rel="stylesheet">
+        <!--Feuille de style-->
         <link href="public/css/style.css" rel="stylesheet" /> 
+        <link href="public/css/smallDevicesStyle.css" rel="stylesheet" media="screen and (max-width:576px)" />
+        <link href="public/css/mediumDevicesStyle.css" rel="stylesheet" media="screen and (max-width:768px)" />
+        <!--Tiny MCE-->
 		<script src="https://cdn.tiny.cloud/1/cfrzdwr2883ozk22peorltuqrkcyt8jxiqelelhtmz885mrw/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script> 
 	    <script>tinymce.init({ selector: '#newPost' });</script>
-        <title>Mon blog</title>
+        <!--Titre, description, auteur-->
+        <title>Billet simple pour l'Alaska</title>
+        <meta name="description" content="Découvrez les nouvelles aventures de Jean Forteroche sur son blog: Billet simple pour l'Alaska."/>
+        <meta name="author" content="Jean Forteroche" />
+        <!--Facebook-->
+        <meta property="og:title" content="Billet simple pour l'Alaska" />
+        <meta property="og:description" content="Découvrez les nouvelles aventures de Jean Forteroche sur son blog: Billet simple pour l'Alaska.">
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="http://marielacour.fr/projet4/" />
+        <meta property="og:image" content="http://marielacour.fr/projet4/public/images/alaska.jpg" />
+        <meta property="og:locale" content="fr_FR" />    
+        <meta property="og:site_name" content="Billet simple pour l'Alaska">
+        <meta property="fb:app_id" content="jean_forteroche_id" />
+        <!--Twitter-->
+        <meta name="twitter:title" content="Billet simple pour l'Alaska">
+        <meta name="twitter:description" content="Découvrez les nouvelles aventures de Jean Forteroche sur son blog: Billet simple pour l'Alaska.">
+        <meta name="twitter:image" content="http://marielacour.fr/projet4/public/images/alaska.jpg">
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image:alt" content="Alt text for image">
+        <meta name="twitter:site" content="@website-jeanforteroche">
     </head>
 
     <body>
@@ -24,7 +56,7 @@
             </section>
             <footer>
                 <?php include("footerView.php"); ?>
-            </footer--> 
+            </footer> 
         </div>
         
 
