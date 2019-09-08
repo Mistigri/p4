@@ -1,8 +1,4 @@
-<?php 
-
-ob_start(); 
-
-?>
+<?php ob_start(); ?>
 
 <?php 
 
@@ -23,12 +19,12 @@ if(isset($_SESSION['id']) && ($_SESSION['status'] == 1)) {
             <em>le <?= $data['comment_date']; ?></em>
         </h3>
 
-         <p>
-        <?= nl2br($data['comment']);
+        <p>
+        <?= htmlspecialchars($data['comment']);
         ?>
         <br />
 
-        <em><a href="index.php?action=deleteComment&id=<?= $data['id'] ?>">Supprimer le commentaire</a></em>
+        <em><a href="index.php?action=deleteComment&id=<?= $data['id'] ?>">Supprimer le commentaire</a></em><br/>
         <em><a href="index.php?action=ignoreComment&id=<?= $data['id'] ?>">Ignorer le signalement</a></em>
         </p>
     </div>
