@@ -1,67 +1,62 @@
-<?php 
+<?php ob_start(); ?>
 
-ob_start(); 
-
-?>
-
-<h1>Mon super blog !</h1>
-<p><a href="index.php">Retour à la liste des billets</a></p>
+<h1>Billet simple pour l'Alaska !</h1>
+<a class="btn btn-info retourListe" href="index.php">Retour à la liste des billets</a>
 
 <div class="news">
     <h3>
         <?= htmlspecialchars($post['title']); ?>
-        <em>le <?= $post['creation_date_fr']; ?></em>
+        <em>le <?= $post['creation_date_fr']; ?>
+        <?php if(($post['creation_date_fr']) !== ($post['update_date_fr'])) {
+            echo '<br/>Dernière mise à jour : '.($post['update_date_fr']);
+        }
+        ?></em>
     </h3>
-    <p>
-    <?php
-    echo nl2br(htmlspecialchars($post['content']));
-    ?>
-    </p>
+
+    <?php echo nl2br($post['content']); ?>
 </div>
 
-<h2>Commentaires</h2>
-<?php if(isset($_SESSION['id'])) {
-    ?>
+<div class="comments">
+    <h2>Commentaires</h2>
+    <?php if(isset($_SESSION['id'])) {
+        ?>
 
-    <form action="index.php?action=addComment&amp;id=<?= $post['id'] ?>" method="post">
+        <form action="index.php?action=addComment&amp;id=<?= $post['id'] ?>" method="post">
+            <div>
+                <label for="comment">Commentaire</label><br />
+                <textarea id="comment" name="comment"></textarea>
+            </div>
+            <div>
+                <input type="submit" />
+            </div>
+        </form>
 
-    <div>
-        <label for="comment">Commentaire</label><br />
-        <textarea id="comment" name="comment"></textarea>
-    </div>
-    <div>
-        <input type="submit" />
-    </div>
-    </form>
-
-<?php
-}
-
-while ($comment = $comments->fetch()) {
-
-?>
-
-<p><strong><?= (htmlspecialchars($comment['commentWriter'])); ?></strong> le <?= $comment['comment_date_fr']; ?> 
-<?php 
-if(isset($_SESSION['id'])) {
-    ?>
-    (<a href="index.php?action=notifyComment&amp;id=<?=$comment['id']?>">Signaler</a>)</p>
     <?php
-}
-?>
+    }
 
-<p><?= nl2br(htmlspecialchars($comment['comment'])); ?></p>
+    while ($comment = $comments->fetch()) {
 
-<?php
+    ?>
 
-} // Fin de la boucle des commentaires
+    <p><strong><?= (htmlspecialchars($comment['commentWriter'])); ?></strong> le <?= $comment['comment_date_fr']; ?> 
+    <?php 
+    if(isset($_SESSION['id'])) {
+        ?>
+        (<a href="index.php?action=notifyComment&amp;id=<?=$comment['id']?>">Signaler</a>)</p>
+        <?php
+    }
+    ?>
 
-?>
+    <p><?= nl2br(htmlspecialchars($comment['comment'])); ?></p>
 
-<?php
+    <?php
 
-$content = ob_get_clean(); 
+    } // Fin de la boucle des commentaires
 
-?>
+    ?>
+
+</div>
+
+<?php $content = ob_get_clean(); ?>
  
 <?php require('template.php'); ?>
