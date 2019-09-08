@@ -14,8 +14,10 @@ body {
 h1 {
     text-align:center;
     font-family: 'Pacifico';
-    margin-top: 50px;
+    margin-top: 30px;
+    margin-bottom: 30px;
     font-size:2.7rem;
+    text-shadow: 5px 5px 5px white;
 }
 
 .connectionForm {
@@ -41,31 +43,30 @@ section {
 .listeBillets {
     font-family: 'Pacifico';
     font-size: 1.7rem;
-    text-shadow: 2px 2px 2px white;
-    padding : 50px;
+    padding : 10px;
+    margin:10px;
 }
 
 .optionsAuteur {
     font-size: 1.2em;
     padding : 50px;
+    font-weight: bold;
 }
 
-.news {
-    width:70%;
-    margin:auto;
-}
-
+.news,
 .comments {
-    width:70%;
-    margin:auto; 
-    background-color: rgba(255, 255, 255, 0.5);
-    padding :10px;
+    width:75%;
+    margin:auto;
+    padding : 25px;
+    background-color : rgba(255,255,255,0.5);
+    border-radius: 5px;
 }
 
 a.retourListe {
-    color : black;
-    text-shadow: 2px 2px 2px white;
-    font-size: 1.1em;
+    color : white;
+    font-size: 1.2em;
+    padding : 10px;
+    margin:10px;
 }
 
 h3 {
@@ -80,7 +81,7 @@ h3 {
     border-top-left-radius: 5px;
 }
 
-.news p {
+.news p, ul, li {
     background-color:#ffcac9;
     margin-top:0px;
     padding : 10px;
@@ -112,6 +113,10 @@ input {
     font-size: 1rem;
     line-height: 1.5;
     border-radius: .25rem;
+}
+
+textarea#comment {
+    width:50%;
 }
 
 .commentaires, .modification, .suppression {
