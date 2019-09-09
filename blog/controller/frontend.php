@@ -10,7 +10,7 @@ require_once('model/LogManager.php');
 function login($username, $password) {
 	$logUser = new \ML\Blog\Model\LogManager();
 	$checkUser = $logUser->userExist($username);
-	if ($checkUser) {
+	if ($checkUser->rowCount() != 0) {
 		$checkUser = $logUser->login($username, $password);
 		$checkedUser = $checkUser->fetch();
 		$isPasswordCorrect = password_verify($password, $checkedUser['password']);
@@ -19,51 +19,38 @@ function login($username, $password) {
 	        $_SESSION['id'] = $checkedUser['id'];
 	        $_SESSION['username'] = $username;
 	        $_SESSION['status'] = $checkedUser['status'];
-	        echo 'Vous êtes connecté !';
 	        header('Location: index.php');
 		}
 	    else {
-	        echo 'Erreur : l\'identifiant et/ou le mot de passe ne correspondent pas.';
-	        //header('Location:index.php?action=listPosts');
+	    	header('Location:index.php?action=showError&errorMessage=Erreur : l\'identifiant et/ou le mot de passe ne correspondent pas.');
 	    }
 	}
 	else {
-		header('Location: index.php?action=register&username=' . $username);
+		header('Location:index.php?action=showError&errorMessage=Erreur : l\'identifiant et/ou le mot de passe ne correspondent pas.');
 	}
 }
-//recherche d'un utilisateur par son pseudo
-function selectUser($username) {
-	$logManager = new \ML\Blog\Model\LogManager();
-	$selectedUser = $logManager->userExist($username);
-	if ($selectedUser === true) {
-		throw new Exception('Cet identifiant existe déjà !');
-	}
-	else {
-	    header('Location: index.php?action=register&username=' . $username);
-	}
-	require('view/frontend/connectionView.php');
-}
+
 //enregistrement si inconnu
 function register($username, $password) {
 	$logManager = new \ML\Blog\Model\LogManager();
-	$selectedUser = $logManager->userExist($username);
-	if ($selectedUser === true) {
-		var_dump("utilisateur existe déjà" );
-		throw new Exception('Cet identifiant existe déjà !');
+	$checkUser = $logManager->userExist($username);
+
+	if ($checkUser ->rowCount() != 0) {
+		header('Location:index.php?action=showError&errorMessage=Erreur : cet identifiant existe déjà.');
 	}
 	else {
 		$pass_hache = password_hash($password, PASSWORD_DEFAULT);
 	   	$insertUser = $logManager->register($username,$pass_hache); 
+	   	header('Location: index.php');
 	}
-	//header('Location: index.php');
 }
 
 
 //utilisateur non connecté
 //accès à la liste des posts
 function listPosts() {
-    $postManager = new \ML\Blog\Model\PostManager(); // Création d'un objet
-    $posts = $postManager->getPosts(); // Appel d'une fonction de cet objet
+    $postManager = new \ML\Blog\Model\PostManager(); 
+    $posts = $postManager->getPosts(); 
     require('view/frontend/listPostsView.php');
 }
 //accès à un post et à ses commentaires
@@ -83,7 +70,7 @@ function addComment($postId, $author, $comment) {
     $author = $_SESSION['id'];
     $affectedLines = $commentManager->postComment($postId, $author, $comment);
     if ($affectedLines === false) {
-        throw new Exception('Impossible d\'ajouter le commentaire !');
+    	header('Location:index.php?action=showError&errorMessage=Erreur : impossible d\'ajouter le commentaire !');
     }
     else {
         header('Location: index.php?action=post&id=' . $postId);
@@ -94,17 +81,11 @@ function notifyComment($commentId) {
 	$commentManager = new \ML\Blog\Model\CommentManager();
 	$selectedComment = $commentManager->notifyComment($commentId);
 	if ($selectedComment === false) {
-	    throw new Exception('Impossible de signaler le commentaire !');
+		header('Location:index.php?action=showError&errorMessage=Erreur : impossible de signaler le commentaire !');
 	}
 	else {
 		header('Location: index.php');
 	}	
-}
-
-function selectComment($commentId) {
-	$commentManager = new \ML\Blog\Model\CommentManager();
-	$selectedComment = $commentManager->selectComment($commentId);
-	require('view/frontend/commentView.php');
 }
 
 
@@ -118,7 +99,7 @@ function formPost($postTitle, $postContent) {
 	$postManager = new \ML\Blog\Model\PostManager();
 	$affectedLines = $postManager->addNewPost($postTitle, $postContent);
     if ($affectedLines === false) {
-        throw new Exception('Impossible d\'ajouter le post !');
+    	header('Location:index.php?action=showError&errorMessage=Erreur : impossible d\'ajouter l\'article !');
     }
     else {
         header('Location:index.php?action=listPosts');
@@ -136,7 +117,7 @@ function updateFormPost($postId, $newTitle, $newPost) {
 	$postManager = new \ML\Blog\Model\PostManager();
 	$selectedPost = $postManager->updatePost($postId, $newTitle, $newPost);
 	if ($selectedPost === false) {
-	    throw new Exception('Impossible de modifier l\'article !');
+		header('Location:index.php?action=showError&errorMessage=Erreur : impossible de modifier l\'article !');
 	}
 	else {
 	    header('Location:index.php?action=listPosts');
@@ -146,10 +127,8 @@ function updateFormPost($postId, $newTitle, $newPost) {
 function deletePost($postId) {
 	$postManager = new \ML\Blog\Model\postManager();
     $getPostToDelete = $postManager->deletePost($_GET['id']);
-    $getCommentsToDelete = $postManager->deleteComments($_GET['id']);
     header('Location:index.php?action=listPosts');
 }
-
 
 
 //accéder à la page de modération des commentaires
@@ -168,24 +147,12 @@ function deleteComment($commentId) {
 function ignoreComment($commentId) {
 	$commentManager = new \ML\Blog\Model\CommentManager();
     $ignoredComment = $commentManager->ignoreComment($_GET['id']);
-    //echo('Commentaire supprimé avec succès !');
     header('Location:index.php?action=moderateComments');
 }
 
 
-
-
-
-/*ajout modif commentaire
-function modifyComment($commentId, $postId, $newAuthor, $newComment) {
-	$commentManager = new \ML\Blog\Model\CommentManager();
-	$selectedComment = $commentManager->modifyComment($commentId, $newAuthor, $newComment);
-	if ($selectedComment === false) {
-	    throw new Exception('Impossible d\'ajouter le commentaire !');
-	}
-	else {
-	    header('Location: index.php?action=post&id=' . $postId);
-	}
-	require('view/frontend/commentView.php');
-}*/
+//afficher un message d'erreur
+function showError($errorMessage) {
+	require('view/frontend/errorView.php');
+}
 
